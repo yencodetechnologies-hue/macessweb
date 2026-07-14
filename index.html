@@ -4,336 +4,1010 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>M-Access | Smart Community Management</title>
+  <meta name="description"
+    content="M Access by Yencode Technologies — one platform for apartment, hostel, and company management with smart visitor access, QR entry, payments, and security.">
+  <title>M Access | Apartment, Hostel & Company Management</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap"
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Manrope:wght@600;700;800&display=swap"
     rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
   <style>
-    /* ================= ROOT ================= */
     :root {
+      --navy: #1E3A8A;
+      --navy-deep: #13275c;
+      --navy-soft: #eef2ff;
+      --emerald: #10B981;
+      --emerald-deep: #059669;
+      --amber: #F59E0B;
       --bg: #ffffff;
-      --card: #f9fbff;
-      --accent: #2d5be3;
-      --text: #1a1e2e;
-      --muted: #4b5563;
-      --nav-bg: rgba(255, 255, 255, 0.8);
-      --border: #e2e8f0;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e8eef5;
+      --shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
+      --radius: 18px;
+      --nav-h: 76px;
+      --font-display: "Manrope", system-ui, sans-serif;
+      --font-body: "DM Sans", system-ui, sans-serif;
     }
 
-    * {
+    *,
+    *::before,
+    *::after {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Outfit', sans-serif;
     }
 
-    html,
-    body {
-      overflow-x: hidden;
-      width: 100%;
+    html {
       scroll-behavior: smooth;
     }
 
     body {
-      background: var(--bg);
+      font-family: var(--font-body);
       color: var(--text);
-      line-height: 1.5;
+      background: var(--bg);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ================= CONTAINER ================= */
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    ul {
+      list-style: none;
+    }
+
     .container {
-      max-width: 1200px;
-      margin: auto;
-      padding: 0 20px;
+      width: min(1140px, calc(100% - 2.5rem));
+      margin-inline: auto;
     }
 
     .section {
-      padding: 80px 0;
-      scroll-margin-top: 100px;
+      padding: clamp(4rem, 8vw, 6.5rem) 0;
+      scroll-margin-top: calc(var(--nav-h) + 12px);
     }
 
-    @media (max-width: 1024px) {
-      .section {
-        padding: 80px 0;
-      }
+    .section-head {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 3rem;
     }
 
-    @media (max-width: 768px) {
-      .section {
-        padding: 60px 0;
-      }
+    .section-head .eyebrow {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--emerald-deep);
+      margin-bottom: 0.75rem;
     }
 
-    /* ================= LOADER ================= */
+    .section-head h2,
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--navy-deep);
+      letter-spacing: -0.02em;
+    }
+
+    .section-head p {
+      margin-top: 0.85rem;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    /* Loader */
     .loader {
       position: fixed;
       inset: 0;
-      background: var(--bg);
-      display: flex;
-      justify-content: center;
-      align-items: center;
       z-index: 9999;
+      display: grid;
+      place-items: center;
+      background: var(--surface);
+      transition: opacity 0.35s ease, visibility 0.35s ease;
     }
 
-    .loader-circle {
-      width: 60px;
-      height: 60px;
-      border: 4px solid rgba(0, 0, 0, 0.05);
-      border-top: 4px solid var(--accent);
+    .loader.hide {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-mark {
+      width: 48px;
+      height: 48px;
+      border: 3px solid var(--navy-soft);
+      border-top-color: var(--navy);
       border-radius: 50%;
-      animation: spin 1s linear infinite;
+      animation: spin 0.8s linear infinite;
     }
 
     @keyframes spin {
-      100% {
+      to {
         transform: rotate(360deg);
       }
     }
 
-    /* ================= CURSOR GLOW ================= */
-    .cursor-glow {
-      position: fixed;
-      width: 450px;
-      height: 450px;
-      background: radial-gradient(circle, rgba(45, 91, 227, 0.2) 0%, rgba(139, 92, 246, 0.15) 40%, transparent 70%);
-      pointer-events: none;
-      transform: translate(-50%, -50%);
-      z-index: -1;
-      mix-blend-mode: screen;
-      filter: blur(50px);
-      transition: width 0.3s, height 0.3s;
-    }
-
-    /* ================= BACKGROUND ================= */
-    .background {
+    /* Background */
+    .page-bg {
       position: fixed;
       inset: 0;
-      background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 50%, #eff6ff 100%);
       z-index: -2;
-      overflow: hidden;
+      background: #ffffff;
     }
 
-    #bg-canvas {
+    .page-bg::after {
+      content: "";
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 45% at 0% 0%, rgba(30, 58, 138, 0.06), transparent 55%),
+        radial-gradient(ellipse 50% 35% at 100% 8%, rgba(16, 185, 129, 0.05), transparent 50%);
+      pointer-events: none;
     }
 
-    .bg-blob {
-      position: absolute;
-      width: 900px;
-      height: 900px;
-      background: radial-gradient(circle, rgba(45, 91, 227, 0.15), transparent 70%);
-      filter: blur(140px);
-      border-radius: 50%;
-      z-index: -2;
-      animation: drift 30s infinite alternate ease-in-out;
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 48px;
+      padding: 0.75rem 1.4rem;
+      border-radius: 999px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .blob-1 {
-      top: -20%;
-      left: -10%;
-      background: radial-gradient(circle, rgba(45, 91, 227, 0.12), transparent 70%);
+    .btn:hover {
+      transform: translateY(-2px);
     }
 
-    .blob-2 {
-      bottom: -15%;
-      right: -10%;
-      background: radial-gradient(circle, rgba(124, 58, 237, 0.1), transparent 70%);
-    }
-
-    .blob-3 {
-      top: 30%;
-      left: 50%;
-      background: radial-gradient(circle, rgba(45, 91, 227, 0.08), transparent 70%);
-    }
-
-
-    @keyframes drift {
-      from {
-        transform: translate(0, 0) scale(1);
-      }
-
-      to {
-        transform: translate(100px, 50px) scale(1.1);
-      }
-    }
-
-    /* ================= SHOW-REVEAL ANIMATIONS ================= */
-    .reveal {
-      opacity: 0;
-      transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
-      will-change: transform, opacity;
-    }
-
-    .reveal-up {
-      transform: translateY(30px);
-    }
-
-    .reveal-left {
-      transform: translateX(-30px);
-    }
-
-    .reveal-right {
-      transform: translateX(30px);
-    }
-
-    .reveal-scale {
-      transform: scale(0.95);
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translate(0) scale(1);
-    }
-
-    /* Word-by-Word Reveal */
-    .word-reveal span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(15px);
-      transition: 1s cubic-bezier(0.2, 1, 0.3, 1);
-      /* Robust inheritance for gradient text clipping */
-      background: inherit;
-      -webkit-background-clip: inherit;
-      background-clip: inherit;
-      -webkit-text-fill-color: inherit;
-      color: inherit;
-    }
-
-    .reveal.active.word-reveal span {
-      opacity: 1;
+    .btn:active {
       transform: translateY(0);
     }
 
-    /* Staggered Delays for Words - More rhythmic slower pace */
-    .word-reveal span:nth-child(1) {
-      transition-delay: 0.1s;
+    .btn-primary {
+      background: var(--navy);
+      color: #fff;
+      box-shadow: 0 10px 28px rgba(30, 58, 138, 0.28);
     }
 
-    .word-reveal span:nth-child(2) {
-      transition-delay: 0.3s;
+    .btn-primary:hover {
+      background: var(--navy-deep);
     }
 
-    .word-reveal span:nth-child(3) {
-      transition-delay: 0.5s;
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.7);
+      border-color: rgba(30, 58, 138, 0.2);
+      color: var(--navy);
+      backdrop-filter: blur(8px);
     }
 
-    .word-reveal span:nth-child(4) {
-      transition-delay: 0.7s;
+    .btn-outline:hover {
+      background: #fff;
+      border-color: var(--navy);
     }
 
-    .word-reveal span:nth-child(5) {
-      transition-delay: 0.9s;
+    .btn-accent {
+      background: var(--emerald);
+      color: #042f2e;
+      box-shadow: 0 10px 28px rgba(16, 185, 129, 0.28);
     }
 
-    .word-reveal span:nth-child(6) {
-      transition-delay: 1.1s;
+    .btn-accent:hover {
+      background: var(--emerald-deep);
+      color: #fff;
     }
 
-    .word-reveal span:nth-child(7) {
-      transition-delay: 1.3s;
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     }
 
-    /* Animated Gradient Text */
-    .gradient-text-animate {
-      background: linear-gradient(90deg, #1a1e2e, #2d5be3, #8b5cf6, #1a1e2e);
-      background-size: 300% auto;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: #1a1e2e;
-      /* Absolute fallback */
-      animation: gradientText 12s linear infinite;
+    nav.scrolled,
+    body.nav-open nav {
+      border-bottom-color: var(--border);
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
     }
 
-    /* Ensure words inside gradient text also have proper visibility */
-    .gradient-text-animate span {
-      -webkit-text-fill-color: inherit;
-      color: inherit;
+    body.nav-open nav {
+      background: #fff;
     }
 
-    @keyframes gradientText {
-      to {
-        background-position: 300% center;
+    .nav-inner {
+      width: min(1140px, calc(100% - 2.5rem));
+      margin-inline: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .logo-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--navy-deep);
+    }
+
+    .logo-wrapper img {
+      height: 42px;
+      width: auto;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .nav-links a {
+      padding: 0.55rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--navy);
+      background: var(--navy-soft);
+    }
+
+    .nav-cta {
+      display: none;
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+      width: 44px;
+      height: 44px;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--navy);
+      cursor: pointer;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 1002;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .mobile-nav-toggle[aria-expanded="true"] {
+      background: var(--navy-soft);
+      border-color: transparent;
+      color: var(--navy-deep);
+    }
+
+    .nav-backdrop {
+      display: none;
+    }
+
+    .nav-mobile-cta {
+      display: none;
+    }
+
+    body.nav-open {
+      overflow: hidden;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      padding-top: calc(var(--nav-h) + 1.5rem);
+      padding-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 55% 50% at 85% 40%, rgba(30, 58, 138, 0.07), transparent 60%),
+        radial-gradient(ellipse 40% 40% at 10% 80%, rgba(16, 185, 129, 0.06), transparent 55%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: clamp(2rem, 5vw, 3.5rem);
+      align-items: center;
+      width: min(1140px, calc(100% - 2.5rem));
+      margin-inline: auto;
+    }
+
+    .hero-brand {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--navy-deep);
+      margin-bottom: 0.85rem;
+    }
+
+    .hero-brand span {
+      display: block;
+      font-size: 0.28em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--navy);
+      background: var(--navy-soft);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.35rem 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+      max-width: 20ch;
+      margin-bottom: 0.9rem;
+    }
+
+    .hero-lead {
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 38ch;
+      margin-bottom: 1.75rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .hero .btn-outline {
+      background: #fff;
+      border-color: var(--border);
+      color: var(--navy);
+    }
+
+    .hero .btn-outline:hover {
+      border-color: var(--navy);
+      background: var(--navy-soft);
+    }
+
+    .hero-visual {
+      position: relative;
+      perspective: 1000px;
+    }
+
+    .hero-visual img {
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(30, 58, 138, 0.12);
+      border: 1px solid var(--border);
+      background: #fff;
+      transform: rotateY(-6deg) rotateX(4deg);
+      transition: transform 0.45s ease;
+      animation: hero-float 6s ease-in-out infinite;
+    }
+
+    .hero-visual:hover img {
+      transform: rotateY(0) rotateX(0) scale(1.02);
+    }
+
+    @keyframes hero-float {
+
+      0%,
+      100% {
+        translate: 0 0;
+      }
+
+      50% {
+        translate: 0 -12px;
       }
     }
 
-    /* Heading Float */
-    .heading-float {
-      animation: headingFloat 6s ease-in-out infinite alternate;
+    /* Solutions */
+    .solutions {
+      background: transparent;
     }
 
-    @keyframes headingFloat {
-      from {
-        transform: translateY(0);
-      }
-
-      to {
-        transform: translateY(-5px);
-      }
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
     }
 
-    /* Shimmer Effect for Buttons */
-    .btn {
+    .solution-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 1.5rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, border-color 0.25s ease;
       position: relative;
       overflow: hidden;
     }
 
-    .btn::after {
+    .solution-card::before {
       content: "";
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(45deg,
-          transparent 45%,
-          rgba(255, 255, 255, 0.1) 50%,
-          transparent 55%);
-      transform: rotate(30deg);
-      animation: shimmer 4s infinite;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
     }
 
-    @keyframes shimmer {
-      0% {
-        transform: translateX(-100%) rotate(30deg);
-      }
-
-      20%,
-      100% {
-        transform: translateX(100%) rotate(30deg);
-      }
+    .solution-card.apartment::before {
+      background: var(--navy);
     }
 
-    /* Staggered Delays for Grid Children */
-    .stagger-reveal>*:nth-child(1) {
-      transition-delay: 0.1s;
+    .solution-card.hostel::before {
+      background: var(--emerald);
     }
 
-    .stagger-reveal>*:nth-child(2) {
-      transition-delay: 0.2s;
+    .solution-card.company::before {
+      background: var(--amber);
     }
 
-    .stagger-reveal>*:nth-child(3) {
-      transition-delay: 0.3s;
+    .solution-card:hover {
+      transform: translateY(-6px);
+      border-color: transparent;
     }
 
-    .stagger-reveal>*:nth-child(4) {
-      transition-delay: 0.4s;
+    .solution-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 1.25rem;
+      margin-bottom: 1.1rem;
     }
 
-    .stagger-reveal>*:nth-child(5) {
-      transition-delay: 0.5s;
+    .apartment .solution-icon {
+      background: var(--navy-soft);
+      color: var(--navy);
     }
 
-    .stagger-reveal>*:nth-child(6) {
-      transition-delay: 0.6s;
+    .hostel .solution-icon {
+      background: #d1fae5;
+      color: var(--emerald-deep);
+    }
+
+    .company .solution-icon {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .solution-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--navy-deep);
+      margin-bottom: 0.4rem;
+    }
+
+    .solution-card .audience {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .solution-card ul {
+      display: grid;
+      gap: 0.55rem;
+    }
+
+    .solution-card li {
+      display: flex;
+      gap: 0.55rem;
+      align-items: flex-start;
+      font-size: 0.94rem;
+      color: var(--text);
+    }
+
+    .solution-card li i {
+      margin-top: 0.3rem;
+      color: var(--emerald);
+      font-size: 0.7rem;
+    }
+
+    /* Features */
+    .features {
+      background: var(--surface-soft);
+      border-block: 1px solid var(--border);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .feature-item {
+      padding: 1.4rem 1.2rem;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .feature-item:hover {
+      border-color: rgba(30, 58, 138, 0.35);
+      transform: translateY(-3px);
+    }
+
+    .feature-item i {
+      font-size: 1.35rem;
+      color: var(--navy);
+      margin-bottom: 0.85rem;
+    }
+
+    .feature-item h3 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      color: var(--navy-deep);
+    }
+
+    .feature-item p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Roles */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .role-card {
+      text-align: center;
+      padding: 1.6rem 1.1rem;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .role-card .role-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 1rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--navy-soft);
+      color: var(--navy);
+      font-size: 1.2rem;
+    }
+
+    .role-card h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.4rem;
+    }
+
+    .role-card p {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* How it works */
+    .how {
+      background: var(--surface-soft);
+      border-block: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .how .section-head .eyebrow {
+      color: var(--emerald-deep);
+    }
+
+    .how .section-head h2 {
+      color: var(--navy-deep);
+    }
+
+    .how .section-head p {
+      color: var(--muted);
+      opacity: 1;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      counter-reset: step;
+    }
+
+    .step {
+      position: relative;
+      padding: 1.5rem 1.2rem;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+
+    .step h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      color: var(--navy-deep);
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      opacity: 1;
+    }
+
+    /* Contact */
+    .contact {
+      background: #ffffff;
+      border-block: 1px solid var(--border);
+    }
+
+    .contact-panel {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: clamp(1.75rem, 4vw, 2.75rem);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-panel h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--navy-deep);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .contact-panel .lead {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 1.5rem;
+      max-width: 38ch;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .contact-cards {
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .contact-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      padding: 1.1rem 1.15rem;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .contact-card:hover {
+      border-color: rgba(30, 58, 138, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .contact-card i {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--navy-soft);
+      color: var(--navy);
+      flex-shrink: 0;
+    }
+
+    .contact-card strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.15rem;
+    }
+
+    .contact-card span,
+    .contact-card a {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .contact-card a:hover {
+      color: var(--navy);
+    }
+
+    /* Reviews */
+    .reviews {
+      background: var(--surface-soft);
+      border-block: 1px solid var(--border);
+    }
+
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .review-card {
+      padding: 1.75rem 1.4rem;
+      border-radius: var(--radius);
+      background: #ffffff;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .review-card p {
+      font-size: 1.02rem;
+      color: var(--text);
+      margin-bottom: 1.2rem;
+      quotes: "“" "”";
+    }
+
+    .review-card p::before {
+      content: open-quote;
+      color: var(--navy);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1.4rem;
+      margin-right: 0.15rem;
+    }
+
+    .review-card strong {
+      display: block;
+      font-family: var(--font-display);
+      color: var(--navy-deep);
+      font-size: 0.95rem;
+    }
+
+    .review-card span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* Download */
+    .download {
+      text-align: center;
+      background: #ffffff;
+    }
+
+    .download-panel {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: clamp(2.5rem, 6vw, 4rem) 1.5rem;
+      color: var(--text);
+      box-shadow: var(--shadow);
+    }
+
+    .download-panel img {
+      height: 72px;
+      width: auto;
+      margin: 0 auto 1.25rem;
+    }
+
+    .download-panel h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3vw, 2.3rem);
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: var(--navy-deep);
+    }
+
+    .download-panel p {
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+      max-width: 36ch;
+      margin-inline: auto;
+    }
+
+    .store-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      min-height: 52px;
+      padding: 0.7rem 1.35rem;
+      border-radius: 14px;
+      background: var(--navy);
+      color: #fff;
+      font-weight: 700;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .store-btn:hover {
+      transform: translateY(-2px);
+      background: var(--navy-deep);
+      box-shadow: 0 12px 28px rgba(30, 58, 138, 0.22);
+    }
+
+    .store-btn i {
+      font-size: 1.35rem;
+    }
+
+    /* Footer */
+    footer {
+      background: #ffffff;
+      color: var(--muted);
+      padding: 3.5rem 0 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .footer-brand img {
+      height: 40px;
+    }
+
+    .footer-brand strong {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--navy-deep);
+    }
+
+    .footer-grid p {
+      font-size: 0.95rem;
+      max-width: 32ch;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    .footer-grid h4 {
+      font-family: var(--font-display);
+      color: var(--navy-deep);
+      margin-bottom: 0.85rem;
+      font-size: 1rem;
+    }
+
+    .footer-grid a,
+    .footer-grid li {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-size: 0.93rem;
+      color: var(--muted);
+      transition: color 0.2s ease;
+    }
+
+    .footer-grid a:hover {
+      color: var(--navy);
+    }
+
+    .footer-grid i {
+      width: 1.1rem;
+      margin-right: 0.45rem;
+      color: var(--navy);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: none;
     }
 
     .delay-1 {
@@ -348,106 +1022,100 @@
       transition-delay: 0.3s;
     }
 
-    /* ================= NAV ================= */
-    nav {
-      position: fixed;
-      width: 100%;
-      background: transparent;
-      border-bottom: 1px solid transparent;
-      z-index: 1000;
-      transition: all 0.4s ease;
-    }
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
 
-    nav.scrolled {
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      background: transparent;
-      border-bottom: 1px solid transparent;
-      padding: 10px 0;
-    }
+      .hero h1,
+      .hero-lead {
+        max-width: none;
+        margin-inline: auto;
+      }
 
-    .nav-inner {
-      /* max-width: 1200px; */
-      /* margin: auto; */
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      /* align-items: center; */
-    }
+      .hero-buttons {
+        justify-content: center;
+      }
 
-    .logo-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
+      .hero-tag {
+        margin-inline: auto;
+      }
 
-    nav img {
-      height: 42px;
-    }
+      .hero-visual {
+        max-width: 520px;
+        margin-inline: auto;
+      }
 
-    .logo-text {
-      font-family: 'Manrope', sans-serif;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--accent);
-      letter-spacing: -0.5px;
-    }
+      .hero-visual img {
+        transform: none;
+      }
 
-    .nav-links {
-      list-style: none;
-      display: flex;
-      gap: 30px;
-      margin-top: auto;
-      margin-bottom: auto;
-    }
+      .solution-grid,
+      .review-grid,
+      .footer-grid,
+      .contact-panel {
+        grid-template-columns: 1fr 1fr;
+      }
 
-    .nav-links a {
-      text-decoration: none;
-      color: var(--muted);
-      font-weight: 500;
-      font-size: 15px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      padding: 8px 16px;
-      border-radius: 20px;
-      position: relative;
-    }
+      .feature-grid,
+      .roles-grid,
+      .steps {
+        grid-template-columns: 1fr 1fr;
+      }
 
-    .nav-links a:hover {
-      color: var(--accent);
-      background: rgba(45, 91, 227, 0.05);
-    }
-
-    .nav-links a.active {
-      color: white;
-      background: var(--accent);
-      box-shadow: 0 4px 12px rgba(45, 91, 227, 0.2);
-    }
-
-    .mobile-nav-toggle {
-      display: none;
-      font-size: 24px;
-      cursor: pointer;
-      color: var(--text);
+      .nav-cta {
+        display: inline-flex;
+      }
     }
 
     @media (max-width: 768px) {
+      .mobile-nav-toggle {
+        display: grid;
+      }
+
+      .nav-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+        background: rgba(15, 23, 42, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.28s ease;
+      }
+
+      .nav-backdrop.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
       .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: var(--nav-h);
         left: 0;
-        width: 100%;
-        background: white;
+        right: 0;
+        bottom: 0;
+        z-index: 1001;
+        display: flex;
         flex-direction: column;
-        gap: 0;
-        padding: 10px 0;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        border-bottom: 1px solid var(--border);
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0.4rem;
+        padding: 1.5rem 1.35rem max(2rem, env(safe-area-inset-bottom));
+        background: #fff;
+        transform: translateX(100%);
+        opacity: 1;
+        pointer-events: none;
+        transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       .nav-links.active {
-        display: flex;
+        transform: translateX(0);
+        pointer-events: auto;
       }
 
       .nav-links li {
@@ -455,759 +1123,548 @@
       }
 
       .nav-links a {
-        padding: 15px 20px;
-        display: block;
+        display: flex;
+        align-items: center;
         width: 100%;
+        min-height: 52px;
+        padding: 0.9rem 1.15rem;
+        border-radius: 14px;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--navy-deep);
+        letter-spacing: -0.01em;
       }
 
-      .mobile-nav-toggle {
-        display: block;
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--navy);
+        background: var(--navy-soft);
       }
-    }
 
-    /* ================= HERO ================= */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-    }
+      .nav-mobile-cta {
+        display: flex;
+        width: 100%;
+        margin-top: auto;
+        padding-top: 1.5rem;
+      }
 
-    @media (max-width: 768px) {
+      .nav-mobile-cta .btn {
+        width: 100%;
+        min-height: 52px;
+        font-size: 1rem;
+      }
+
+      .nav-cta {
+        display: none;
+      }
+
+      .solution-grid,
+      .feature-grid,
+      .roles-grid,
+      .steps,
+      .review-grid,
+      .footer-grid,
+      .contact-panel {
+        grid-template-columns: 1fr;
+      }
+
       .hero {
         min-height: auto;
-        padding-top: 100px;
-        padding-bottom: 60px;
+        padding-bottom: 4rem;
+      }
+
+      .hero-brand {
+        font-size: clamp(2.4rem, 12vw, 3.4rem);
       }
     }
 
-    .hero-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 80px;
-    }
+    @media (prefers-reduced-motion: reduce) {
 
-    .hero-content {
-      flex: 1;
-      max-width: 550px;
-    }
-
-    .hero h1 {
-      font-family: 'Manrope', sans-serif;
-      font-size: clamp(42px, 5vw, 64px);
-      line-height: 1.1;
-      font-weight: 800;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, #1a1e2e 0%, #2d5be3 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      margin-top: 24px;
-      font-size: 19px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .hero-buttons {
-      margin-top: 36px;
-    }
-
-    .btn {
-      padding: 14px 28px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: 600;
-      margin-right: 14px;
-      transition: 0.3s;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: white;
-      box-shadow: 0 10px 30px rgba(45, 91, 227, 0.2);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba(45, 91, 227, 0.35);
-    }
-
-    .btn-outline {
-      border: 1.5px solid var(--border);
-      color: var(--text);
-    }
-
-    .btn-outline:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-      background: rgba(45, 91, 227, 0.05);
-    }
-
-    .hero-image {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      perspective: 1500px;
-    }
-
-    .hero-image img {
-      width: 280px;
-      border-radius: 28px;
-      box-shadow: 0 30px 80px rgba(45, 91, 227, 0.2);
-      transform-style: preserve-3d;
-      transition: transform 0.2s cubic-bezier(0.2, 1, 0.3, 1);
-      animation: float 6s ease-in-out infinite;
-    }
-
-    /* 3D Tilt Wrapper */
-    .tilt-3d {
-      transform-style: preserve-3d;
-      transition: transform 0.2s cubic-bezier(0.2, 1, 0.3, 1);
-    }
-
-    .tilt-3d i,
-    .tilt-3d img {
-      transform: translateZ(50px);
-      /* Deep parallax for icons/images */
-      transition: transform 0.2s cubic-bezier(0.2, 1, 0.3, 1);
-    }
-
-    .hero-image:hover img {
-      box-shadow: 0 50px 100px rgba(45, 91, 227, 0.3);
-    }
-
-    @keyframes float {
-      0% {
-        transform: translateY(0);
+      html {
+        scroll-behavior: auto;
       }
 
-      50% {
-        transform: translateY(-12px);
+      .loader-mark,
+      .hero-visual img,
+      .reveal {
+        animation: none !important;
+        transition: none !important;
+        opacity: 1 !important;
+        transform: none !important;
       }
 
-      100% {
-        transform: translateY(0);
-      }
-    }
-
-    /* ================= FEATURES (FIXED ALIGNMENT) ================= */
-
-    .feature-block {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 120px;
-      margin-top: 140px;
-    }
-
-    @media (max-width: 1200px) {
-      .feature-block {
-        gap: 60px;
-      }
-    }
-
-    @media (max-width: 1024px) {
-      .feature-block {
-        flex-direction: column !important;
-        text-align: center;
-        margin-top: 100px;
-        gap: 40px;
-      }
-    }
-
-    .feature-block.reverse {
-      flex-direction: row-reverse;
-    }
-
-    .feature-text {
-      flex: 1;
-      max-width: 520px;
-    }
-
-    .feature-text h2 {
-      font-family: 'Manrope';
-      font-size: 34px;
-      margin-bottom: 18px;
-    }
-
-    .feature-text p {
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.6;
-    }
-
-    .feature-visual {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      perspective: 1000px;
-    }
-
-    .feature-block:not(.reverse) .feature-visual {
-      justify-content: flex-end;
-    }
-
-    .feature-block.reverse .feature-visual {
-      justify-content: flex-start;
-    }
-
-    .feature-box {
-      width: 240px;
-      height: 240px;
-      background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
-      border-radius: 40px;
-      border: 1px solid rgba(45, 91, 227, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s;
-      box-shadow: 0 20px 40px rgba(45, 91, 227, 0.05);
-      transform-style: preserve-3d;
-    }
-
-    .feature-box:hover {
-      transform: translateY(-10px) rotate(3deg);
-      border-color: var(--accent);
-      box-shadow: 0 40px 100px rgba(45, 91, 227, 0.15);
-    }
-
-    .feature-box i {
-      background: linear-gradient(135deg, var(--accent), #1f3c88);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      filter: drop-shadow(0 5px 15px rgba(45, 91, 227, 0.3));
-    }
-
-    /* ================= GRID ================= */
-    .grid {
-      margin-top: 80px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-    }
-
-    @media (max-width: 768px) {
-      .grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-    }
-
-    .card {
-      background: var(--bg);
-      padding: 32px;
-      border-radius: 24px;
-      text-align: center;
-      border: 1px solid var(--border);
-      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .card:hover {
-      transform: translateY(-8px);
-      border-color: var(--accent);
-      box-shadow: 0 30px 70px rgba(45, 91, 227, 0.1);
-    }
-
-    .card i {
-      font-size: 26px;
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-
-    /* ================= TESTIMONIALS ================= */
-    .testimonial-grid {
-      margin-top: 60px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-    }
-
-    .testimonial {
-      background: var(--card);
-      padding: 32px;
-      border-radius: 24px;
-      border: 1px solid var(--border);
-      transition: 0.3s;
-    }
-
-    .testimonial:hover {
-      border-color: var(--accent);
-      transform: translateY(-5px);
-    }
-
-    .testimonial p {
-      color: var(--muted);
-      margin-bottom: 12px;
-    }
-
-    /* ================= DOWNLOAD ================= */
-    .download {
-      text-align: center;
-    }
-
-    .store-btn {
-      padding: 14px 28px;
-      background: linear-gradient(135deg, #1f3c88, #2d5be3);
-      border-radius: 40px;
-      text-decoration: none;
-      color: white;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin: 10px;
-      transition: 0.3s;
-      font-weight: 600;
-    }
-
-    .store-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 20px 60px rgba(45, 91, 227, 0.4);
-    }
-
-    /* ================= FOOTER ================= */
-    footer {
-      padding: 60px 0;
-      text-align: center;
-      color: white;
-      background: #080c14;
-    }
-
-    /* ================= RESPONSIVE ADJUSTMENTS ================= */
-    @media(max-width: 1200px) {
-      .hero-inner {
-        gap: 40px;
-      }
-    }
-
-    @media(max-width: 1024px) {
-      .hero-inner {
-        flex-direction: column;
-        text-align: center;
-        gap: 60px;
-      }
-
-      .hero-content {
-        max-width: 100%;
-      }
-
-      .hero h1 {
-        font-size: clamp(36px, 8vw, 54px);
-      }
-
-      .hero-image img {
-        width: 240px;
-      }
-    }
-
-    @media(max-width: 768px) {
-      .hero h1 {
-        font-size: clamp(28px, 10vw, 36px);
-        font-weight: 800;
-        line-height: 1.2;
-      }
-
-      .hero p {
-        font-size: 16px;
-        margin-top: 16px;
-        line-height: 1.5;
-      }
-
-      .btn {
-        display: block;
-        margin: 12px 0;
-        width: 100%;
-        text-align: center;
-        padding: 12px 20px;
-      }
-
-      .hero-buttons {
-        margin-top: 28px;
-      }
-
-      .feature-text h2 {
-        font-size: 24px;
-        margin-bottom: 10px;
-        line-height: 1.3;
-      }
-
-      .feature-box {
-        width: 160px;
-        height: 160px;
-        border-radius: 30px;
-      }
-
-      .feature-box i {
-        font-size: 2.2em;
-      }
-
-      .feature-block {
-        margin-top: 60px !important;
-        gap: 30px !important;
-      }
-    }
-
-    @media(max-width: 480px) {
-      .hero h1 {
-        font-size: 28px;
-      }
-
-      .hero-image img {
-        width: 180px;
+      .nav-links,
+      .nav-backdrop {
+        transition: none !important;
       }
     }
   </style>
 </head>
 
 <body>
+  <div class="page-bg" aria-hidden="true"></div>
 
-  <div class="loader">
-    <div class="loader-circle"></div>
-  </div>
-  <div class="cursor-glow"></div>
-  <div class="background">
-    <canvas id="bg-canvas"></canvas>
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
-    <div class="bg-blob blob-3"></div>
+  <div class="loader" aria-hidden="true">
+    <div class="loader-mark"></div>
   </div>
 
   <nav>
     <div class="nav-inner">
-      <a href="#" class="logo-wrapper">
-        <img src="logo.png" alt="Logo">
-        <span class="logo-text">M Access</span>
+      <a href="#home" class="logo-wrapper">
+        <img src="logo.png" alt="M Access logo" width="42" height="42">
+        <span>M Access</span>
       </a>
-      <div class="mobile-nav-toggle">
-        <i class="fa-solid fa-bars"></i>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#">Home</a></li>
+      <button class="mobile-nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+      <ul class="nav-links" id="nav-menu">
+        <li><a href="#home" class="active">Home</a></li>
+        <li><a href="#solutions">Solutions</a></li>
         <li><a href="#features">Features</a></li>
-        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#contact-us">Contact</a></li>
         <li><a href="#download">Download</a></li>
+        <li class="nav-mobile-cta">
+          <a href="#download" class="btn btn-primary">Get the app</a>
+        </li>
       </ul>
+      <a href="#download" class="btn btn-primary nav-cta">Get the app</a>
     </div>
   </nav>
+  <div class="nav-backdrop" id="nav-backdrop" hidden></div>
 
-  <!-- HERO -->
-  <section id="home" class="hero section">
-    <div class="container hero-inner">
-      <div class="hero-content reveal reveal-left word-reveal">
-        <h1 class="gradient-text-animate">
-          <span>One</span> <span>App</span> <span>for</span> <span>Complete</span> <span>Apartment</span>
-          <span>Life.</span>
-        </h1>
-        <p>Visitor management, QR entry, maintenance payments, amenities booking, secure dialing and more — all in one
-          platform.</p>
-        <div class="hero-buttons">
-          <a href="#download" class="btn btn-primary">Get Started</a>
-          <a href="#features" class="btn btn-outline">Explore Features</a>
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div class="hero-inner">
+        <div class="hero-content reveal">
+          <p class="hero-brand"><span>Yencode Technologies</span>M Access</p>
+          <p class="hero-tag">Resident &amp; admin access</p>
+          <h1>One platform for apartments, hostels &amp; companies</h1>
+          <p class="hero-lead">
+            Visitor QR entry, out-pass control, maintenance payments, and secure gate operations — built for residential
+            societies, hostels, and workplaces.
+          </p>
+          <div class="hero-buttons">
+            <a href="#download" class="btn btn-accent">Download app</a>
+            <a href="#solutions" class="btn btn-outline">Explore solutions</a>
+          </div>
+        </div>
+        <div class="hero-visual reveal delay-1">
+          <img src="dashboard.png" alt="M Access dashboard preview" width="715" height="480" loading="eager">
         </div>
       </div>
-      <div class="hero-image reveal reveal-scale delay-1">
-        <img src="dashboard.png" alt="Dashboard" id="hero-img" class="tilt-3d">
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FEATURES -->
-  <section id="features" class="section">
-    <div class="container">
-
-      <div class="feature-block reveal reveal-left">
-        <div class="feature-text">
-          <h2 class="heading-float">Smart Visitor & QR Entry</h2>
-          <p>Approve visitors digitally and generate QR codes for seamless entry.</p>
+    <!-- SOLUTIONS -->
+    <section id="solutions" class="section solutions">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Solutions</p>
+          <h2>Built for every property you manage</h2>
+          <p>Choose your property type in M Access and unlock workflows tailored for apartments, hostels, and companies.</p>
         </div>
-        <div class="feature-visual">
-          <div class="feature-box tilt-3d">
-            <i class="fa-solid fa-qrcode fa-3x"></i>
+
+        <div class="solution-grid">
+          <article class="solution-card apartment reveal">
+            <div class="solution-icon"><i class="fa-solid fa-building"></i></div>
+            <h3>Apartment</h3>
+            <p class="audience">For RWAs, residents &amp; society security</p>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> Smart visitor approval with QR gate entry</li>
+              <li><i class="fa-solid fa-check"></i> Maintenance payments &amp; amenity booking</li>
+              <li><i class="fa-solid fa-check"></i> Family, vehicles, daily help &amp; kid exit</li>
+              <li><i class="fa-solid fa-check"></i> Notices, complaints, events &amp; community feed</li>
+              <li><i class="fa-solid fa-check"></i> Delivery, cab control &amp; secure dialing</li>
+            </ul>
+          </article>
+
+          <article class="solution-card hostel reveal delay-1">
+            <div class="solution-icon"><i class="fa-solid fa-bed"></i></div>
+            <h3>Hostel</h3>
+            <p class="audience">For owners, wardens &amp; students</p>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> Beds &amp; sharing (single to six sharing)</li>
+              <li><i class="fa-solid fa-check"></i> Out-pass requests with gate-pass QR</li>
+              <li><i class="fa-solid fa-check"></i> Warden controls &amp; vacancy tracking</li>
+              <li><i class="fa-solid fa-check"></i> Boys, girls, co-living &amp; other hostels</li>
+              <li><i class="fa-solid fa-check"></i> Hostel ID, help desk &amp; visitor logs</li>
+            </ul>
+          </article>
+
+          <article class="solution-card company reveal delay-2">
+            <div class="solution-icon"><i class="fa-solid fa-briefcase"></i></div>
+            <h3>Company</h3>
+            <p class="audience">For offices, campuses &amp; corporate sites</p>
+            <ul>
+              <li><i class="fa-solid fa-check"></i> Staff &amp; guest access with QR verification</li>
+              <li><i class="fa-solid fa-check"></i> Security operations &amp; visitor subtypes</li>
+              <li><i class="fa-solid fa-check"></i> Notices, documents &amp; support workflows</li>
+              <li><i class="fa-solid fa-check"></i> Secure dialing without exposing numbers</li>
+              <li><i class="fa-solid fa-check"></i> Management overview for multi-block sites</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section features">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Platform</p>
+          <h2>Everything your gate and office need</h2>
+          <p>Shared capabilities across apartments, hostels, and companies — so operations stay consistent and secure.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-item reveal">
+            <i class="fa-solid fa-qrcode"></i>
+            <h3>QR visitor flow</h3>
+            <p>Approve digitally and generate entry codes that security can scan at the gate.</p>
+          </article>
+          <article class="feature-item reveal delay-1">
+            <i class="fa-solid fa-phone-slash"></i>
+            <h3>Secure dialing</h3>
+            <p>Connect guards and residents without exposing personal mobile numbers.</p>
+          </article>
+          <article class="feature-item reveal delay-2">
+            <i class="fa-solid fa-credit-card"></i>
+            <h3>Payments</h3>
+            <p>Collect maintenance and facility dues with tracked payment history.</p>
+          </article>
+          <article class="feature-item reveal delay-3">
+            <i class="fa-solid fa-bell"></i>
+            <h3>Notices &amp; push</h3>
+            <p>Broadcast announcements and timely alerts to every registered user.</p>
+          </article>
+          <article class="feature-item reveal">
+            <i class="fa-solid fa-headset"></i>
+            <h3>Complaints &amp; support</h3>
+            <p>Raise issues, track status, and close the loop with management teams.</p>
+          </article>
+          <article class="feature-item reveal delay-1">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h3>Security monitoring</h3>
+            <p>Visitor logs, QR scans, kid exit, and guard messaging in one ops view.</p>
+          </article>
+          <article class="feature-item reveal delay-2">
+            <i class="fa-solid fa-folder-open"></i>
+            <h3>Documents</h3>
+            <p>Store and share property documents with authorized management roles.</p>
+          </article>
+          <article class="feature-item reveal delay-3">
+            <i class="fa-solid fa-screwdriver-wrench"></i>
+            <h3>Facility ops</h3>
+            <p>Track assets, lifts, and day-to-day society facility operations.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ROLES -->
+    <section id="roles" class="section">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Who uses it</p>
+          <h2>Roles built into the same app</h2>
+          <p>Management, residents, security, and wardens each get the tools they need — without switching platforms.</p>
+        </div>
+
+        <div class="roles-grid">
+          <article class="role-card reveal">
+            <div class="role-icon"><i class="fa-solid fa-user-tie"></i></div>
+            <h3>Management</h3>
+            <p>Blocks, rooms, users, billing, ads, subscriptions, and full property oversight.</p>
+          </article>
+          <article class="role-card reveal delay-1">
+            <div class="role-icon"><i class="fa-solid fa-house-user"></i></div>
+            <h3>Resident / Tenant</h3>
+            <p>Approvals, payments, amenities or out-pass, notices, and everyday self-service.</p>
+          </article>
+          <article class="role-card reveal delay-2">
+            <div class="role-icon"><i class="fa-solid fa-user-shield"></i></div>
+            <h3>Security</h3>
+            <p>QR scan, visitor subtypes, kid exits, dialing, and guard–tenant messaging.</p>
+          </article>
+          <article class="role-card reveal delay-3">
+            <div class="role-icon"><i class="fa-solid fa-clipboard-user"></i></div>
+            <h3>Warden</h3>
+            <p>Hostel leave requests, facility access, and student out-pass supervision.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section how">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">How it works</p>
+          <h2>Live in four clear steps</h2>
+          <p>From property setup to daily gate control — M Access keeps the workflow simple.</p>
+        </div>
+
+        <div class="steps">
+          <article class="step reveal">
+            <h3>Create property</h3>
+            <p>Set type as apartment, hostel, or company and configure blocks, rooms, or beds.</p>
+          </article>
+          <article class="step reveal delay-1">
+            <h3>Invite users</h3>
+            <p>Onboard residents, staff, wardens, and security with role-based access.</p>
+          </article>
+          <article class="step reveal delay-2">
+            <h3>Control the gate</h3>
+            <p>Approve visitors or out-passes and let security verify entry with QR.</p>
+          </article>
+          <article class="step reveal delay-3">
+            <h3>Run operations</h3>
+            <p>Collect dues, post notices, handle complaints, and monitor day-to-day ops.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT / PLANS -->
+    <section id="contact-us" class="section contact">
+      <div class="container">
+        <div class="contact-panel reveal">
+          <div>
+            <p class="eyebrow" style="color: var(--emerald-deep); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.75rem;">Plans &amp; setup</p>
+            <h2>Talk to us for plans that fit your property</h2>
+            <p class="lead">
+              Whether you run an apartment society, hostel, or company campus — share your requirements and we’ll help
+              you choose the right M Access plan and get set up.
+            </p>
+            <div class="contact-actions">
+              <a href="tel:+918925033533" class="btn btn-primary">
+                <i class="fa-solid fa-phone"></i> Call us
+              </a>
+              <a href="mailto:info@yencodetechnologies.com?subject=M%20Access%20plan%20enquiry" class="btn btn-outline">
+                <i class="fa-solid fa-envelope"></i> Email us
+              </a>
+            </div>
+          </div>
+          <div class="contact-cards">
+            <a class="contact-card" href="tel:+918925033533">
+              <i class="fa-solid fa-phone"></i>
+              <div>
+                <strong>Phone</strong>
+                <span>89250 33533</span>
+              </div>
+            </a>
+            <a class="contact-card" href="mailto:info@yencodetechnologies.com?subject=M%20Access%20plan%20enquiry">
+              <i class="fa-solid fa-envelope"></i>
+              <div>
+                <strong>Email</strong>
+                <span>info@yencodetechnologies.com</span>
+              </div>
+            </a>
+            <div class="contact-card">
+              <i class="fa-solid fa-location-dot"></i>
+              <div>
+                <strong>Office</strong>
+                <span>No.1, Jeganathapuram, Velachery, Chennai – 600042</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="feature-block reverse reveal reveal-right">
-        <div class="feature-text">
-          <h2 class="heading-float">Secure Visitor Confirmation</h2>
-          <p>Security confirms visitors without exposing resident mobile numbers.</p>
+    <!-- REVIEWS -->
+    <section id="testimonials" class="section reviews">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="eyebrow">Reviews</p>
+          <h2>Trusted across communities &amp; campuses</h2>
+          <p>Property teams use M Access to run safer gates and smoother daily operations.</p>
         </div>
-        <div class="feature-visual">
-          <div class="feature-box tilt-3d">
-            <i class="fa-solid fa-phone fa-3x"></i>
+
+        <div class="review-grid">
+          <article class="review-card reveal">
+            <p>Visitor QR and maintenance payments finally live in one place for our society.</p>
+            <strong>Priya S.</strong>
+            <span>RWA President · Apartment</span>
+          </article>
+          <article class="review-card reveal delay-1">
+            <p>Out-pass QR and bed vacancy tracking made hostel check-in and leave far simpler.</p>
+            <strong>Arun K.</strong>
+            <span>Hostel Owner · Co-living</span>
+          </article>
+          <article class="review-card reveal delay-2">
+            <p>Security can confirm guests without exposing staff numbers — a clear win for our campus.</p>
+            <strong>Meera D.</strong>
+            <span>Facilities Admin · Company</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOWNLOAD -->
+    <section id="download" class="section download">
+      <div class="container">
+        <div class="download-panel reveal">
+          <img src="logo.png" alt="M Access" width="72" height="72">
+          <h2>Download M Access</h2>
+          <p>Run apartments, hostels, and companies from one secure access platform.</p>
+          <div class="store-row">
+            <a class="store-btn" href="https://apps.apple.com/in/app/maccess-smart-access-control/id6770438435"
+              target="_blank" rel="noopener noreferrer">
+              <i class="fa-brands fa-apple"></i> App Store
+            </a>
+            <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.yencode.macess" target="_blank"
+              rel="noopener noreferrer">
+              <i class="fa-brands fa-google-play"></i> Google Play
+            </a>
           </div>
         </div>
       </div>
+    </section>
+  </main>
 
-      <h2 class="reveal reveal-up heading-float" style="text-align:center;margin-top:140px;">More Powerful Features</h2>
-
-      <div class="grid stagger-reveal">
-        <div class="card reveal reveal-up"><i class="fa-solid fa-credit-card"></i>
-          <h3>Maintenance Payments</h3>
+  <footer id="contact">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="logo.png" alt="" width="40" height="40">
+            <strong>M Access</strong>
+          </div>
+          <p>Smart property and access management by Yencode Technologies — for apartments, hostels, and companies.</p>
         </div>
-        <div class="card reveal reveal-up"><i class="fa-solid fa-dumbbell"></i>
-          <h3>Amenities Scheduling</h3>
+        <div>
+          <h4>Product</h4>
+          <a href="#solutions">Solutions</a>
+          <a href="#features">Features</a>
+          <a href="#contact-us">Contact</a>
+          <a href="#download">Download</a>
         </div>
-        <div class="card reveal reveal-up"><i class="fa-solid fa-bell"></i>
-          <h3>Events & Notifications</h3>
-        </div>
-        <div class="card reveal reveal-up"><i class="fa-solid fa-truck"></i>
-          <h3>Delivery & Cab Control</h3>
-        </div>
-        <div class="card reveal reveal-up"><i class="fa-solid fa-headset"></i>
-          <h3>Quick Support</h3>
-        </div>
-        <div class="card reveal reveal-up"><i class="fa-solid fa-shield-halved"></i>
-          <h3>Security Monitoring</h3>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li><i class="fa-solid fa-phone"></i> 89250 33533</li>
+            <li><a href="mailto:info@yencodetechnologies.com"><i class="fa-solid fa-envelope"></i>
+                info@yencodetechnologies.com</a></li>
+            <li><i class="fa-solid fa-location-dot"></i> No.1, Jeganathapuram, Velachery, Chennai – 600042</li>
+          </ul>
         </div>
       </div>
-
-    </div>
-  </section>
-
-  <!-- TESTIMONIALS -->
-  <section id="testimonials" class="section">
-    <div class="container">
-      <h2 class="reveal reveal-up" style="text-align:center;">Trusted by Modern Communities</h2>
-      <div class="testimonial-grid stagger-reveal">
-        <div class="testimonial reveal reveal-up">
-          <p>"M-Access streamlined visitor management completely."</p>
-          <strong>– RWA President</strong>
-        </div>
-        <div class="testimonial reveal reveal-up">
-          <p>"Amenities booking and payments are effortless now."</p>
-          <strong>– Resident</strong>
-        </div>
-        <div class="testimonial reveal reveal-up">
-          <p>"Secure dialing without sharing numbers is a game changer."</p>
-          <strong>– Security Supervisor</strong>
-        </div>
+      <div class="footer-bottom">
+        <span>&copy; <span id="year"></span> Yencode Technologies. All rights reserved.</span>
+        <span>M Access · Smart access control</span>
       </div>
-    </div>
-  </section>
-
-  <!-- DOWNLOAD -->
-  <section id="download" class="section download reveal reveal-up">
-    <div class="container">
-      <img src="logo.png" alt="M-Access Logo" style="height: 140px; margin-bottom: 24px;">
-      <h2>Download M-Access</h2>
-      <div style="margin-top: 30px; display: flex; justify-content: center; flex-wrap: wrap;">
-        <a href="https://apps.apple.com/in/app/maccess-smart-access-control/id6770438435" class="store-btn" target="_blank">
-          <i class="fa-brands fa-apple"></i> App Store
-        </a>
-        <a href="https://play.google.com/store/apps/details?id=com.yencode.macess" class="store-btn" target="_blank">
-          <i class="fa-brands fa-google-play"></i> Google Play
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <footer>
-    <div class="container">
-      <p>📞 89250 33533</p>
-      <p>📧 info@yencodetechnologies.com</p>
-      <p>📍 No.1, Jeganathapuram, Velachery, Chennai – 600042</p>
     </div>
   </footer>
 
   <script>
+    const loader = document.querySelector(".loader");
     window.addEventListener("load", () => {
-      document.querySelector(".loader").style.display = "none";
+      loader.classList.add("hide");
     });
 
-    const glow = document.querySelector('.cursor-glow');
-    document.addEventListener('mousemove', e => {
-      glow.style.left = e.clientX + 'px';
-      glow.style.top = e.clientY + 'px';
-    });
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-    const navToggle = document.querySelector('.mobile-nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    const nav = document.querySelector("nav");
+    const navToggle = document.querySelector(".mobile-nav-toggle");
+    const navLinks = document.querySelector(".nav-links");
+    const navBackdrop = document.getElementById("nav-backdrop");
+    const navLinksList = document.querySelectorAll(".nav-links a");
 
-    navToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('active');
-    });
+    function setNavOpen(open) {
+      navLinks.classList.toggle("active", open);
+      navBackdrop.classList.toggle("active", open);
+      navBackdrop.hidden = !open;
+      document.body.classList.toggle("nav-open", open);
+      navToggle.setAttribute("aria-expanded", String(open));
+      navToggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      navToggle.innerHTML = open
+        ? '<i class="fa-solid fa-xmark" aria-hidden="true"></i>'
+        : '<i class="fa-solid fa-bars" aria-hidden="true"></i>';
 
-    // Close menu when a link is clicked
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-      });
-    });
-
-    // Header scroll effect
-    const nav = document.querySelector('nav');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        nav.classList.add('scrolled');
+      if (window.innerWidth <= 768) {
+        navLinks.setAttribute("aria-hidden", String(!open));
       } else {
-        nav.classList.remove('scrolled');
+        navLinks.removeAttribute("aria-hidden");
+      }
+    }
+
+    navToggle.addEventListener("click", () => {
+      setNavOpen(!navLinks.classList.contains("active"));
+    });
+
+    navBackdrop.addEventListener("click", () => setNavOpen(false));
+
+    navLinksList.forEach((link) => {
+      link.addEventListener("click", () => setNavOpen(false));
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && navLinks.classList.contains("active")) {
+        setNavOpen(false);
       }
     });
 
-    // --- Generic 3D Tilt Logic ---
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-    if (!isTouchDevice) {
-      document.querySelectorAll('.tilt-3d').forEach(el => {
-        const wrapper = el.parentElement; // Perspective is usually on the parent
-
-        wrapper.addEventListener('mousemove', (e) => {
-          const rect = wrapper.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-
-          const centerX = rect.width / 2;
-          const centerY = rect.height / 2;
-
-          const rotateX = (y - centerY) / (rect.height / 25); // Max 25deg
-          const rotateY = (centerX - x) / (rect.width / 25);
-
-          el.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-
-        wrapper.addEventListener('mouseleave', () => {
-          el.style.transform = `rotateX(0deg) rotateY(0deg)`;
-        });
-      });
-    }
-
-    // Scroll Reveal Intersection Observer
-    const observerOptions = {
-      threshold: 0.05,
-      rootMargin: '0px 0px -20px 0px'
-    };
-
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        // Toggle 'active' class based on whether it's in view
-        // This ensures animations replay every time you scroll up or down
-        entry.target.classList.toggle('active', entry.isIntersecting);
-      });
-    }, observerOptions);
-
-    document.querySelectorAll('.reveal').forEach(el => {
-      revealObserver.observe(el);
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 768) {
+        setNavOpen(false);
+        navLinks.removeAttribute("aria-hidden");
+      } else if (!navLinks.classList.contains("active")) {
+        navLinks.setAttribute("aria-hidden", "true");
+      }
     });
 
-    // Navigation Active State Highlight
-    const sections = document.querySelectorAll('section[id]');
-    const navLinksList = document.querySelectorAll('.nav-links a');
+    if (window.innerWidth <= 768) {
+      navLinks.setAttribute("aria-hidden", "true");
+    }
 
-    const navObserverOptions = {
-      threshold: 0.2, // Trigger earlier
-      rootMargin: "-20% 0px -20% 0px"
-    };
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 40);
+    }, { passive: true });
 
-    const navObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinksList.forEach(link => {
-            link.classList.remove('active');
-            const href = link.getAttribute('href');
-            if (href === `#${id}` || (id === 'home' && (href === '#' || href === '#home'))) {
-              link.classList.add('active');
-            }
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!reduceMotion) {
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            entry.target.classList.toggle("active", entry.isIntersecting);
           });
-        }
-      });
-    }, navObserverOptions);
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+      );
 
-    sections.forEach(section => {
-      navObserver.observe(section);
-    });
+      document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+    } else {
+      document.querySelectorAll(".reveal").forEach((el) => el.classList.add("active"));
+    }
 
-    // Manual click override
-    navLinksList.forEach(link => {
-      link.addEventListener('click', (e) => {
-        // We let the observer handle it generally, but for instant UI feedback:
-        navLinksList.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-      });
-    });
+    const sections = document.querySelectorAll("section[id]");
+    const navObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const id = entry.target.getAttribute("id");
+          navLinksList.forEach((link) => {
+            const href = link.getAttribute("href");
+            link.classList.toggle("active", href === `#${id}`);
+          });
+        });
+      },
+      { threshold: 0.25, rootMargin: "-20% 0px -45% 0px" }
+    );
 
-    // Ensure Home is active at the very top
-    window.addEventListener('scroll', () => {
-      if (window.scrollY < 100) {
-        navLinksList.forEach(link => {
-          link.classList.remove('active');
-          if (link.getAttribute('href') === '#' || link.getAttribute('href') === '#home') {
-            link.classList.add('active');
-          }
+    sections.forEach((section) => navObserver.observe(section));
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY < 80) {
+        navLinksList.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === "#home");
         });
       }
-    });
-
-    // --- Interactive 3D Background Logic ---
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let width, height;
-    let mouseX = 0, mouseY = 0;
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    class Particle {
-      constructor() {
-        this.init();
-      }
-      init() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.z = Math.random() * 1000;
-        this.size = 1 + Math.random() * 2;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-      }
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.z -= 1.2; // Slightly faster movement for more "life"
-
-        if (this.z < 1) this.init();
-
-        // Project 3D to 2D
-        const scale = 400 / (400 + this.z);
-        this.px = (this.x - width / 2) * scale + width / 2 + (mouseX * (1 - scale) * 0.08);
-        this.py = (this.y - height / 2) * scale + height / 2 + (mouseY * (1 - scale) * 0.08);
-        this.pSize = this.size * scale;
-      }
-      draw() {
-        const opacity = Math.min(1, (1000 - this.z) / 700) * 0.6;
-        ctx.fillStyle = `rgba(45, 91, 227, ${opacity})`;
-        ctx.beginPath();
-        ctx.arc(this.px, this.py, this.pSize, 0, Math.PI * 2);
-        ctx.fill();
-      }
-    }
-
-    for (let i = 0; i < 120; i++) particles.push(new Particle());
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX - width / 2;
-      mouseY = e.clientY - height / 2;
-    });
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animate);
-    }
-    animate();
+    }, { passive: true });
   </script>
-
 </body>
 
 </html>
