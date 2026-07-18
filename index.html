@@ -451,19 +451,131 @@
       perspective: 1000px;
     }
 
-    .hero-visual img {
+    .hero-visual-frame {
+      position: relative;
       width: 100%;
+      aspect-ratio: 715 / 480;
       border-radius: 20px;
       box-shadow: 0 24px 60px rgba(30, 58, 138, 0.12);
       border: 1px solid var(--border);
       background: #fff;
+      overflow: hidden;
       transform: rotateY(-6deg) rotateX(4deg);
       transition: transform 0.45s ease;
       animation: hero-float 6s ease-in-out infinite;
     }
 
-    .hero-visual:hover img {
+    .hero-visual:hover .hero-visual-frame {
       transform: rotateY(0) rotateX(0) scale(1.02);
+    }
+
+    .hero-carousel {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      touch-action: pan-y;
+      cursor: grab;
+    }
+
+    .hero-carousel.dragging {
+      cursor: grabbing;
+    }
+
+    .hero-carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transform: translate3d(calc(var(--slide) * -100%), 0, 0);
+      transition: transform 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .hero-carousel.dragging .hero-carousel-track {
+      transition: none;
+    }
+
+    .hero-slide {
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    }
+
+    .hero-shot {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .hero-carousel-arrow {
+      position: absolute;
+      top: 50%;
+      translate: 0 -50%;
+      z-index: 2;
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--navy);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .hero-visual:hover .hero-carousel-arrow,
+    .hero-carousel-arrow:focus-visible {
+      opacity: 1;
+    }
+
+    .hero-carousel-arrow:hover {
+      background: #fff;
+      transform: translateY(-50%) scale(1.06);
+    }
+
+    .hero-carousel-arrow.prev {
+      left: 12px;
+    }
+
+    .hero-carousel-arrow.next {
+      right: 12px;
+    }
+
+    .hero-carousel-dots {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 14px;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .hero-carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(30, 58, 138, 0.25);
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.25s ease, width 0.25s ease;
+    }
+
+    .hero-carousel-dot.active {
+      width: 22px;
+      background: var(--navy);
     }
 
     @keyframes hero-float {
@@ -582,6 +694,24 @@
       margin-top: 0.3rem;
       color: var(--emerald);
       font-size: 0.7rem;
+    }
+
+    .solution-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.25rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .solution-pdf:hover {
+      text-decoration: underline;
+    }
+
+    .solution-pdf i {
+      color: #dc2626;
     }
 
     /* Features */
@@ -1064,7 +1194,7 @@
         margin-inline: auto;
       }
 
-      .hero-visual img {
+      .hero-visual-frame {
         transform: none;
       }
 
@@ -1268,12 +1398,20 @@
       }
 
       .loader-mark,
-      .hero-visual img,
+      .hero-visual-frame,
+      .hero-shot,
       .reveal {
         animation: none !important;
         transition: none !important;
-        opacity: 1 !important;
         transform: none !important;
+      }
+
+      .hero-carousel-track {
+        transition: none !important;
+      }
+
+      .reveal {
+        opacity: 1 !important;
       }
 
       .nav-links,
@@ -1335,7 +1473,28 @@
           </div>
         </div>
         <div class="hero-visual reveal delay-1">
-          <img src="dashboard.png" alt="M Access dashboard preview" width="715" height="480" loading="eager">
+          <div class="hero-visual-frame">
+            <div class="hero-carousel" id="hero-carousel" aria-roledescription="carousel" aria-label="Product screenshots">
+              <div class="hero-carousel-track" id="hero-carousel-track" style="--slide: 0;">
+                <div class="hero-slide">
+                  <img src="dashboard.png" alt="M Access apartment dashboard" class="hero-shot" width="715" height="480" loading="eager">
+                </div>
+                <div class="hero-slide">
+                  <img src="imeg.jpeg" alt="M Access hostel rooms dashboard" class="hero-shot" width="715" height="480" loading="lazy">
+                </div>
+              </div>
+              <button type="button" class="hero-carousel-arrow prev" aria-label="Previous screenshot">
+                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="hero-carousel-arrow next" aria-label="Next screenshot">
+                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+              </button>
+              <div class="hero-carousel-dots" id="hero-carousel-dots" role="tablist" aria-label="Slide selector">
+                <button type="button" class="hero-carousel-dot active" role="tab" aria-selected="true" aria-label="Show slide 1"></button>
+                <button type="button" class="hero-carousel-dot" role="tab" aria-selected="false" aria-label="Show slide 2"></button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1361,6 +1520,9 @@
               <li><i class="fa-solid fa-check"></i> Notices, complaints, events &amp; community feed</li>
               <li><i class="fa-solid fa-check"></i> Delivery, cab control &amp; secure dialing</li>
             </ul>
+            <a class="solution-pdf" href="appartment.pdf" target="_blank" rel="noopener noreferrer">
+              <i class="fa-solid fa-file-pdf"></i> View apartment brochure
+            </a>
           </article>
 
           <article class="solution-card hostel reveal delay-1">
@@ -1374,6 +1536,9 @@
               <li><i class="fa-solid fa-check"></i> Boys, girls, co-living &amp; other hostels</li>
               <li><i class="fa-solid fa-check"></i> Hostel ID, help desk &amp; visitor logs</li>
             </ul>
+            <a class="solution-pdf" href="hostel.pdf" target="_blank" rel="noopener noreferrer">
+              <i class="fa-solid fa-file-pdf"></i> View hostel brochure
+            </a>
           </article>
 
           <article class="solution-card company reveal delay-2">
@@ -1387,6 +1552,9 @@
               <li><i class="fa-solid fa-check"></i> Secure dialing without exposing numbers</li>
               <li><i class="fa-solid fa-check"></i> Management overview for multi-block sites</li>
             </ul>
+            <a class="solution-pdf" href="company.pdf" target="_blank" rel="noopener noreferrer">
+              <i class="fa-solid fa-file-pdf"></i> View company brochure
+            </a>
           </article>
         </div>
       </div>
@@ -1736,6 +1904,106 @@
     }, { passive: true });
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const heroCarousel = document.getElementById("hero-carousel");
+    const heroCarouselTrack = document.getElementById("hero-carousel-track");
+    const heroCarouselDots = heroCarousel
+      ? Array.from(heroCarousel.querySelectorAll(".hero-carousel-dot"))
+      : [];
+    const heroCarouselSlideCount = heroCarouselTrack
+      ? heroCarouselTrack.children.length
+      : 0;
+
+    if (heroCarousel && heroCarouselTrack && heroCarouselSlideCount > 1) {
+      let activeSlide = 0;
+      let autoplayTimer = null;
+
+      function goToSlide(index) {
+        activeSlide = (index + heroCarouselSlideCount) % heroCarouselSlideCount;
+        heroCarouselTrack.style.setProperty("--slide", activeSlide);
+        heroCarouselDots.forEach((dot, i) => {
+          dot.classList.toggle("active", i === activeSlide);
+          dot.setAttribute("aria-selected", String(i === activeSlide));
+        });
+      }
+
+      function nextSlide() {
+        goToSlide(activeSlide + 1);
+      }
+
+      function startAutoplay() {
+        if (reduceMotion) return;
+        stopAutoplay();
+        autoplayTimer = setInterval(nextSlide, 4500);
+      }
+
+      function stopAutoplay() {
+        if (autoplayTimer) {
+          clearInterval(autoplayTimer);
+          autoplayTimer = null;
+        }
+      }
+
+      heroCarousel.querySelector(".prev").addEventListener("click", () => {
+        goToSlide(activeSlide - 1);
+        startAutoplay();
+      });
+
+      heroCarousel.querySelector(".next").addEventListener("click", () => {
+        goToSlide(activeSlide + 1);
+        startAutoplay();
+      });
+
+      heroCarouselDots.forEach((dot, i) => {
+        dot.addEventListener("click", () => {
+          goToSlide(i);
+          startAutoplay();
+        });
+      });
+
+      heroCarousel.addEventListener("mouseenter", stopAutoplay);
+      heroCarousel.addEventListener("mouseleave", startAutoplay);
+
+      // Swipe / drag support
+      let dragStartX = 0;
+      let isDragging = false;
+
+      function dragStart(x) {
+        isDragging = true;
+        dragStartX = x;
+        heroCarousel.classList.add("dragging");
+        stopAutoplay();
+      }
+
+      function dragEnd(x) {
+        if (!isDragging) return;
+        isDragging = false;
+        heroCarousel.classList.remove("dragging");
+        const delta = x - dragStartX;
+        if (Math.abs(delta) > 40) {
+          goToSlide(delta < 0 ? activeSlide + 1 : activeSlide - 1);
+        }
+        startAutoplay();
+      }
+
+      heroCarousel.addEventListener("pointerdown", (e) => dragStart(e.clientX));
+      heroCarousel.addEventListener("pointerup", (e) => dragEnd(e.clientX));
+      heroCarousel.addEventListener("pointercancel", () => {
+        isDragging = false;
+        heroCarousel.classList.remove("dragging");
+      });
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          stopAutoplay();
+        } else {
+          startAutoplay();
+        }
+      });
+
+      goToSlide(0);
+      startAutoplay();
+    }
 
     if (!reduceMotion) {
       const revealObserver = new IntersectionObserver(
