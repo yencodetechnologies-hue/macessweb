@@ -560,43 +560,6 @@
       pointer-events: none;
     }
 
-    .hero-carousel-arrow {
-      position: absolute;
-      top: 50%;
-      translate: 0 -50%;
-      z-index: 2;
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.9);
-      color: var(--navy);
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
-      cursor: pointer;
-      opacity: 0;
-      transition: opacity 0.2s ease, background 0.2s ease, transform 0.2s ease;
-    }
-
-    .hero-visual:hover .hero-carousel-arrow,
-    .hero-carousel-arrow:focus-visible {
-      opacity: 1;
-    }
-
-    .hero-carousel-arrow:hover {
-      background: #fff;
-      transform: translateY(-50%) scale(1.06);
-    }
-
-    .hero-carousel-arrow.prev {
-      left: 12px;
-    }
-
-    .hero-carousel-arrow.next {
-      right: 12px;
-    }
-
     .hero-carousel-dots {
       position: relative;
       z-index: 1;
@@ -1526,12 +1489,6 @@
                   <img src="imeg.jpeg" alt="M Access hostel rooms dashboard" class="hero-shot" width="715" height="480" loading="lazy">
                 </div>
               </div>
-              <button type="button" class="hero-carousel-arrow prev" aria-label="Previous screenshot">
-                <i class="fa-solid fa-chevron-left" aria-hidden="true"></i>
-              </button>
-              <button type="button" class="hero-carousel-arrow next" aria-label="Next screenshot">
-                <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
-              </button>
             </div>
           </div>
           <div class="hero-carousel-dots" id="hero-carousel-dots" role="tablist" aria-label="Slide selector">
@@ -1987,16 +1944,6 @@
           autoplayTimer = null;
         }
       }
-
-      heroCarousel.querySelector(".prev").addEventListener("click", () => {
-        goToSlide(activeSlide - 1);
-        startAutoplay();
-      });
-
-      heroCarousel.querySelector(".next").addEventListener("click", () => {
-        goToSlide(activeSlide + 1);
-        startAutoplay();
-      });
 
       heroCarouselDots.forEach((dot, i) => {
         dot.addEventListener("click", () => {
