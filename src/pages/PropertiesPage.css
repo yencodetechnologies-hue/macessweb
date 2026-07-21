@@ -1,0 +1,76 @@
+.properties-page {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.properties-section,
+.properties-list-section {
+  padding: 1.25rem;
+}
+
+.properties-section h2,
+.properties-list-section h2 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--navy-deep);
+  margin-bottom: 0.35rem;
+}
+
+.inline-college {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--bg);
+}
+
+.inline-college-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.inline-college-head h3 {
+  font-size: 0.95rem;
+}
+
+.inline-college-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.block-form {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.block-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.block-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.block-list span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .properties-page {
+    grid-template-columns: 1fr;
+  }
+}

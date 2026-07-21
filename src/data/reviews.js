@@ -1,0 +1,86 @@
+export const REVIEWS = [
+  {
+    text: 'Visitor QR and maintenance payments finally live in one place for our society.',
+    name: 'Priya S.',
+    role: 'RWA President · Apartment',
+    rating: 5,
+  },
+  {
+    text: 'Out-pass QR and bed vacancy tracking made hostel check-in and leave far simpler.',
+    name: 'Arun K.',
+    role: 'Hostel Owner · Co-living',
+    rating: 5,
+  },
+  {
+    text: 'QR visitor passes and staff approvals made our campus gate faster — no paper registers.',
+    name: 'Meera D.',
+    role: 'Admin Office · College',
+    rating: 5,
+  },
+  {
+    text: 'Guest check-in without exposing employee phone numbers — a clear win for our office.',
+    name: 'Karthik R.',
+    role: 'HR Admin · Company',
+    rating: 5,
+  },
+  {
+    text: 'Security scans visitor QR at the gate and residents get notified instantly. Smooth flow.',
+    name: 'Rajesh M.',
+    role: 'Society Secretary · Apartment',
+    rating: 5,
+  },
+  {
+    text: 'Warden approvals for student leave happen on the phone. Parents love the transparency.',
+    name: 'Suresh P.',
+    role: 'Warden · Boys Hostel',
+    rating: 5,
+  },
+  {
+    text: 'Live visitor dashboard shows who is on campus, whom they meet, and when they checked in.',
+    name: 'Ravi S.',
+    role: 'Security Head · College',
+    rating: 5,
+  },
+  {
+    text: 'Paying maintenance and booking amenities from one app saved our residents so much time.',
+    name: 'Lakshmi V.',
+    role: 'Resident · Apartment',
+    rating: 5,
+  },
+  {
+    text: 'Getting an out-pass QR on my phone beats waiting at the warden desk every weekend.',
+    name: 'Divya N.',
+    role: 'Student · Hostel',
+    rating: 5,
+  },
+  {
+    text: 'Multi-block visitor tracking from a single web dashboard — exactly what we needed.',
+    name: 'Anitha L.',
+    role: 'Facility Manager · Corporate',
+    rating: 5,
+  },
+  {
+    text: 'Paperless parent and vendor entry for campus events. Professional and secure.',
+    name: 'Prof. Venkat',
+    role: 'Dean · Engineering College',
+    rating: 5,
+  },
+  {
+    text: 'Notices and complaint updates reach every flat without WhatsApp chaos.',
+    name: 'Sanjay T.',
+    role: 'Property Manager · Apartment',
+    rating: 5,
+  },
+  {
+    text: 'Parent visit approvals with ID capture work flawlessly during admission season.',
+    name: 'Nisha K.',
+    role: 'Operations Lead · Hostel',
+    rating: 5,
+  },
+  {
+    text: 'We went live in under a day. Cloud dashboard, mobile apps, and gate QR all connected.',
+    name: 'Deepak I.',
+    role: 'IT Admin · Company',
+    rating: 5,
+  },
+];
