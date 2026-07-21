@@ -535,8 +535,8 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      object-position: top center;
+      object-fit: contain;
+      object-position: center top;
       -webkit-user-drag: none;
       user-select: none;
       pointer-events: none;
@@ -1466,12 +1466,13 @@
 
       .hero-visual-frame {
         width: 100%;
-        max-width: 340px;
+        max-width: 300px;
         min-width: 0;
-        aspect-ratio: 16 / 10;
+        margin-inline: auto;
+        aspect-ratio: 9 / 19.5;
         border: none;
-        border-radius: 20px;
-        background: #fff;
+        border-radius: 24px;
+        background: #f8fafc;
         box-shadow: var(--shadow);
         animation: none;
         transform: none !important;
@@ -1482,8 +1483,8 @@
       }
 
       .hero-shot {
-        object-fit: cover;
-        object-position: top center;
+        object-fit: contain;
+        object-position: center top;
       }
 
       .hero-carousel-dots {
