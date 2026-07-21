@@ -466,7 +466,8 @@
     .hero-visual-frame {
       position: relative;
       z-index: 1;
-      width: min(300px, 78%);
+      width: min(300px, 100%);
+      min-width: 260px;
       aspect-ratio: 9 / 19.3;
       border-radius: 46px;
       border: 10px solid var(--navy-deep);
@@ -1276,10 +1277,13 @@
       .hero-visual {
         max-width: 520px;
         margin-inline: auto;
+        width: 100%;
+        padding-inline: 0.25rem;
       }
 
       .hero-visual-frame {
         transform: none;
+        animation: none;
       }
 
       .solution-grid,
@@ -1448,6 +1452,42 @@
 
       .hero-buttons .btn {
         width: 100%;
+      }
+
+      .hero-visual {
+        margin-top: 0.5rem;
+        align-self: stretch;
+      }
+
+      .hero-visual::before,
+      .hero-visual::after {
+        display: none;
+      }
+
+      .hero-visual-frame {
+        width: 100%;
+        max-width: 340px;
+        min-width: 0;
+        aspect-ratio: 16 / 10;
+        border: none;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: var(--shadow);
+        animation: none;
+        transform: none !important;
+      }
+
+      .hero-visual-frame::before {
+        display: none;
+      }
+
+      .hero-shot {
+        object-fit: cover;
+        object-position: top center;
+      }
+
+      .hero-carousel-dots {
+        margin-top: 0.25rem;
       }
 
       .section {

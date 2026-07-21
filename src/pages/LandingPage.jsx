@@ -120,7 +120,7 @@ export default function LandingPage() {
                 </a>
               </div>
             </div>
-            <div className="hero-visual reveal delay-1">
+            <div className="hero-visual">
               <div className="hero-visual-frame">
                 <div
                   className="hero-carousel"
