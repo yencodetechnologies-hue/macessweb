@@ -156,6 +156,16 @@ export default function LandingPage() {
                         loading="lazy"
                       />
                     </div>
+                    <div className="hero-slide">
+                      <img
+                        src="/visitor.jpeg"
+                        alt="M Access visitor management dashboard"
+                        className="hero-shot"
+                        width={715}
+                        height={480}
+                        loading="lazy"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -164,7 +174,7 @@ export default function LandingPage() {
                 role="tablist"
                 aria-label="Slide selector"
               >
-                {[0, 1].map((i) => (
+                {[0, 1, 2].map((i) => (
                   <button
                     key={i}
                     type="button"

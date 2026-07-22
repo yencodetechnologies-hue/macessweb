@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const SLIDE_COUNT = 2;
+const SLIDE_COUNT = 3;
 const NAV_SECTIONS = ['home', 'solutions', 'features', 'roles', 'how', 'contact-us', 'testimonials', 'download'];
 
 export function useLandingEffects() {

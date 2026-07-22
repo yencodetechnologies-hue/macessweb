@@ -4,7 +4,6 @@ import { useAuth, isAdminRole, isUserRole } from '../context/AuthContext';
 import './LoginPage.css';
 
 const ROLES = [
-  { id: 'admin', label: 'Admin', hint: 'Email + password' },
   { id: 'apartment', label: 'Management', hint: 'Mobile + password' },
   { id: 'user', label: 'User / Tenant', hint: 'Email or mobile + password' },
 ];
@@ -15,7 +14,7 @@ export default function LoginPage() {
   const location = useLocation();
   const from = location.state?.from || '/admin';
 
-  const [role, setRole] = useState('admin');
+  const [role, setRole] = useState('apartment');
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -27,8 +26,7 @@ export default function LoginPage() {
     if (isUserRole(user.userType)) return <Navigate to="/user" replace />;
   }
 
-  const identifierLabel =
-    role === 'apartment' ? 'Mobile number' : role === 'user' ? 'Email or mobile' : 'Email';
+  const identifierLabel = role === 'apartment' ? 'Mobile number' : 'Email or mobile';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,7 +85,9 @@ export default function LoginPage() {
               onChange={(e) => setIdentifier(e.target.value)}
               required
               autoComplete="username"
-              placeholder={role === 'apartment' ? '10-digit mobile' : 'you@example.com'}
+              placeholder={
+                role === 'apartment' ? '10-digit mobile' : 'you@example.com or mobile'
+              }
             />
           </div>
 
